@@ -1,6 +1,6 @@
 # jdk8-demo-swingset2-redux ReadMe
 
-`jdk8-demo:swingset2-redux` is a stand alone repackaging of the `swingset2` demo from [Java SE Development Kit 8 Demos and Samples)(https://www.oracle.com/java/technologies/java-archive-misc-downloads.html),
+`jdk8-demo:swingset2-redux` is a stand alone repackaging of the `swingset2` demo from [Java SE Development Kit 8 Demos and Samples](https://www.oracle.com/java/technologies/java-archive-misc-downloads.html),
 which is built with `maven` instead of [NetBeans](https://netbeans.apache.org/front/main/index.html), and has been rearranged to conform to `maven` source and resource layout conventions.
 
 
