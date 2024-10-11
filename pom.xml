@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>jdk8-demo</groupId>
+  <artifactId>swingset2-redux</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>swingset2-redux</name>
+
+  <properties>
+    
+    <!-- JDK config -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.mainclass.name>SwingSet2</project.mainclass.name>
+    <required-jdk.version>1.8</required-jdk.version>
+    <maven.compiler.source>${required-jdk.version}</maven.compiler.source>
+    <maven.compiler.target>${required-jdk.version}</maven.compiler.target>
+
+    <!-- plugin and extension versions -->
+    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+    <maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
+    <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+    <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
+    
+  </properties>
+
+  <build>
+    <plugins>
+
+       <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <debug>true</debug>
+            <showDeprecation>true</showDeprecation>
+            <showWarnings>true</showWarnings>
+          </configuration>
+      </plugin>
+
+       <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+                 <configuration>
+                         <archive>
+                              <manifest>
+                                   <mainClass>${project.mainclass.name}</mainClass>
+                                   <addClasspath>true</addClasspath>
+                                   <addDefaultEntries>true</addDefaultEntries>
+                              </manifest>
+                         </archive>
+             </configuration>
+       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+        <configuration>
+              <propertiesEncoding>ISO-8859-1</propertiesEncoding>
+         </configuration>
+       </plugin>
+           
+        <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-enforcer-plugin</artifactId>
+           <version>${maven-enforcer-plugin.version}</version>
+           <executions>
+              <execution>
+                <id>enforce-java</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                <rules>
+                   <requireJavaVersion>
+                     <version>${required-jdk.version}</version>
+                   </requireJavaVersion>
+                </rules>    
+              </configuration>
+            </execution>
+          </executions>
+       </plugin>
+
+    </plugins>
+    <resources>
+       <resource>
+         <directory>${basedir}/src/main/resources</directory>
+       </resource>
+       <resource>
+         <directory>${basedir}/src/main/java</directory>
+       </resource>
+    </resources>
+  </build>
+</project>
