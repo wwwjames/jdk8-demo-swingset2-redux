@@ -7,7 +7,8 @@ which is built with `maven` instead of [NetBeans](https://netbeans.apache.org/fr
 ## Files and Directories
 
  - `artifacts` contains non-source related documentation located in the same path locations from the original `demo` directory.
- - `artifacts/demo/java-dot-com-slash-bsd-license.txt`: text of the URL as referred to by `artifacts/demo/DEMOS_LICENSE`.
+ - `artifacts/demo/java-dot-com-slash-bsd-license.txt`: text of the URL as referred to by `artifacts/demo/DEMOS_LICENSE`
+ - `artifacts/IntelliJ/runConfigurations`: IntelliJ IDE run configs.
  - `src`: standard maven source and resources layout.
 
 

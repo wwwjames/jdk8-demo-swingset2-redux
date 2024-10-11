@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SwingSet2" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="SwingSet2" />
+    <module name="swingset2-redux" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
