@@ -32,25 +32,16 @@
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 import javax.swing.border.*;
-import javax.swing.colorchooser.*;
-import javax.swing.filechooser.*;
-import javax.accessibility.*;
-
 import javax.swing.plaf.metal.MetalTheme;
 import javax.swing.plaf.metal.OceanTheme;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-
 import java.lang.reflect.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
 import java.util.*;
-import java.io.*;
-import java.applet.*;
-import java.net.*;
+
 
 /**
  * A demo that shows all of the Swing components.
@@ -78,15 +69,9 @@ public class SwingSet2 extends JPanel {
     };
 
     void loadDemos() {
-        for(int i = 0; i < demos.length;) {
-            if(isApplet() && demos[i].equals("FileChooserDemo")) {
-               // don't load the file chooser demo if we are
-               // an applet
-            } else {
-               loadDemo(demos[i]);
-            }
-            i++;
-        }
+       for( String demo : demos ) {
+           loadDemo( demo );
+       }
     }
 
     // The current Look & Feel
@@ -134,9 +119,6 @@ public class SwingSet2 extends JPanel {
     // Used only if swingset is an application
     private JFrame frame = null;
 
-    // Used only if swingset is an applet
-    private SwingSet2Applet applet = null;
-
     // To debug or not to debug, that is the question
     private boolean DEBUG = true;
     private int debugCounter = 0;
@@ -159,17 +141,11 @@ public class SwingSet2 extends JPanel {
 
     private boolean dragEnabled = false;
 
-    public SwingSet2(SwingSet2Applet applet) {
-        this(applet, null);
-    }
-
     /**
      * SwingSet2 Constructor
      */
-    public SwingSet2(SwingSet2Applet applet, GraphicsConfiguration gc) {
+    public SwingSet2(GraphicsConfiguration gc) {
 
-        // Note that applet may be null if this is started as an application
-        this.applet = applet;
 
         String lafName = UIManager.getLookAndFeel().getName();
         lookAndFeelData = getInstalledLookAndFeelData();
@@ -177,9 +153,8 @@ public class SwingSet2 extends JPanel {
                 .filter(laf -> lafName.equals(laf.name))
                 .findFirst().get();
 
-        if (!isApplet()) {
-            frame = createFrame(gc);
-        }
+
+        frame = createFrame(gc);
 
         // set the layout
         setLayout(new BorderLayout());
@@ -209,10 +184,9 @@ public class SwingSet2 extends JPanel {
     public static void main(String[] args) {
     // Create SwingSet on the default monitor
         UIManager.put("swing.boldMetal", Boolean.FALSE);
-        SwingSet2 swingset = new SwingSet2(null, GraphicsEnvironment.
-                                             getLocalGraphicsEnvironment().
-                                             getDefaultScreenDevice().
-                                             getDefaultConfiguration());
+        SwingSet2 swingset = new SwingSet2( GraphicsEnvironment.getLocalGraphicsEnvironment().
+                                                                getDefaultScreenDevice().
+                                                                getDefaultConfiguration());
     }
 
     // *******************************************************
@@ -227,12 +201,7 @@ public class SwingSet2 extends JPanel {
         add(top, BorderLayout.NORTH);
 
         menuBar = createMenus();
-
-    if (isApplet()) {
-        applet.setJMenuBar(menuBar);
-    } else {
         frame.setJMenuBar(menuBar);
-    }
 
         // creates popup menu accessible via keyboard
         popupMenu = createPopupMenu();
@@ -319,13 +288,11 @@ public class SwingSet2 extends JPanel {
                        "FileMenu.save_as_accessible_description", null);
 
 
-        if(!isApplet()) {
-            fileMenu.addSeparator();
+        fileMenu.addSeparator();
 
-            createMenuItem(fileMenu, "FileMenu.exit_label", "FileMenu.exit_mnemonic",
-                           "FileMenu.exit_accessible_description", new ExitAction(this)
-            );
-        }
+        createMenuItem(fileMenu, "FileMenu.exit_label", "FileMenu.exit_mnemonic",
+                           "FileMenu.exit_accessible_description", new ExitAction(this) );
+
 
         // Create these menu items for the first SwingSet only.
         if (numSSs == 0) {
@@ -441,7 +408,6 @@ public class SwingSet2 extends JPanel {
 
 
         // ***** create the multiscreen menu, if we have multiple screens
-    if (!isApplet()) {
         GraphicsDevice[] screens = GraphicsEnvironment.
                                     getLocalGraphicsEnvironment().
                                     getScreenDevices();
@@ -459,7 +425,6 @@ public class SwingSet2 extends JPanel {
                 createMultiscreenMenuItem(multiScreenMenu, i);
             }
         }
-    }
 
         return menuBar;
     }
@@ -673,7 +638,7 @@ public class SwingSet2 extends JPanel {
      * applicable if coming up as an application, not an applet);
      */
     public void showSwingSet2() {
-        if(!isApplet() && getFrame() != null) {
+        if(getFrame() != null) {
             // put swingset in a frame and show it
             JFrame f = getFrame();
             f.setTitle(getString("Frame.title"));
@@ -723,21 +688,6 @@ public class SwingSet2 extends JPanel {
     }
 
     /**
-     * Determines if this is an applet or application
-     */
-    public boolean isApplet() {
-        return (applet != null);
-    }
-
-    /**
-     * Returns the applet instance
-     */
-    public SwingSet2Applet getApplet() {
-        return applet;
-    }
-
-
-    /**
      * Returns the frame instance
      */
     public JFrame getFrame() {
@@ -773,8 +723,6 @@ public class SwingSet2 extends JPanel {
         if(contentPane == null) {
             if(getFrame() != null) {
                 contentPane = getFrame().getContentPane();
-            } else if (getApplet() != null) {
-                contentPane = getApplet().getContentPane();
             }
         }
         return contentPane;
@@ -896,15 +844,11 @@ public class SwingSet2 extends JPanel {
     }
 
     private void updateThisSwingSet() {
-        if (isApplet()) {
-            SwingUtilities.updateComponentTreeUI(getApplet());
-        } else {
-            JFrame frame = getFrame();
-            if (frame == null) {
+        JFrame frame = getFrame();
+        if (frame == null) {
                 SwingUtilities.updateComponentTreeUI(this);
-            } else {
+        } else {
                 SwingUtilities.updateComponentTreeUI(frame);
-            }
         }
 
         SwingUtilities.updateComponentTreeUI(popupMenu);
@@ -919,12 +863,8 @@ public class SwingSet2 extends JPanel {
     public void updateLookAndFeel() {
         try {
             UIManager.setLookAndFeel(currentLookAndFeel.className);
-            if (isApplet()) {
-                updateThisSwingSet();
-            } else {
-                for (SwingSet2 ss : swingSets) {
+            for (SwingSet2 ss : swingSets) {
                     ss.updateThisSwingSet();
-                }
             }
         } catch (Exception ex) {
             System.out.println("Failed loading L&F: " + currentLookAndFeel);
@@ -1152,12 +1092,8 @@ public class SwingSet2 extends JPanel {
 
         public void actionPerformed(ActionEvent e) {
             boolean dragEnabled = ((JCheckBoxMenuItem)e.getSource()).isSelected();
-            if (isApplet()) {
-                setDragEnabled(dragEnabled);
-            } else {
-                for (SwingSet2 ss : swingSets) {
+            for (SwingSet2 ss : swingSets) {
                     ss.setDragEnabled(dragEnabled);
-                }
             }
         }
     }
@@ -1217,12 +1153,9 @@ public class SwingSet2 extends JPanel {
 
                 button.addActionListener(new OkAction(aboutBox));
             }
+
             aboutBox.pack();
-            if (isApplet()) {
-                aboutBox.setLocationRelativeTo(getApplet());
-            } else {
-                aboutBox.setLocationRelativeTo(getFrame());
-            }
+            aboutBox.setLocationRelativeTo(getFrame());
             aboutBox.show();
         }
     }
@@ -1241,14 +1174,12 @@ public class SwingSet2 extends JPanel {
                                    getScreenDevices();
             if (screen == ALL_SCREENS) {
                 for (int i = 0; i < gds.length; i++) {
-                    SwingSet2 swingset = new SwingSet2(null,
-                                  gds[i].getDefaultConfiguration());
+                    SwingSet2 swingset = new SwingSet2(gds[i].getDefaultConfiguration());
                     swingset.setDragEnabled(dragEnabled);
                 }
             }
             else {
-                SwingSet2 swingset = new SwingSet2(null,
-                             gds[screen].getDefaultConfiguration());
+                SwingSet2 swingset = new SwingSet2(gds[screen].getDefaultConfiguration());
                 swingset.setDragEnabled(dragEnabled);
             }
         }
